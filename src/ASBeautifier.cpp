@@ -2494,6 +2494,7 @@ void ASBeautifier::parseCurrentLine(const string &line)
 			{
 				// found a 'private:' or 'public:' inside a class definition
 				--indentCount;
+				++spaceIndentCount;
 			}
 
 			else if (isCStyle() && !isInClass
@@ -2531,9 +2532,14 @@ void ASBeautifier::parseCurrentLine(const string &line)
 				else if (isCStyle() || (isSharpStyle() && peekNextChar(line, i) == ';'))    // is in a label (e.g. 'label1:')
 				{
 					if (labelIndent)
+					{
 						--indentCount; // unindent label by one indent
+						++spaceIndentCount;
+					}
 					else if (!lineBeginsWithBracket)
+					{
 						indentCount = 0; // completely flush indent to left
+					}
 				}
 			}
 		}
